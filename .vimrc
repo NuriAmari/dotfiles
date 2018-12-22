@@ -19,6 +19,7 @@ nnoremap <F8> <C-w>k
 nnoremap <F9> <C-w>l
 nnoremap <F10> <C-w>q
 nnoremap <F11> :NERDTreeToggle<CR>
+nnoremap <C-r> py regression.py<CR>
 
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
@@ -60,6 +61,10 @@ Plug 'srcery-colors/srcery-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'itchyny/lightline.vim'
 call plug#end()
+
+if $TERM == "xterm-256color"
+  set t_Co=256
+endif
 
 set rtp+=/usr/local/opt/fzf
 set runtimepath^=~/.vim/bundle/ctrlp.vim
