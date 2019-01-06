@@ -10,7 +10,10 @@ set nowrap
 set background=light
 set laststatus=2
 syntax enable
-colorscheme srcery 
+set noshowmode
+colorscheme base16-flat 
+
+set clipboard=unnamed
 
 nnoremap <F5> :CtrlP<space>.<CR>
 nnoremap <F6> <C-w>h
@@ -60,12 +63,38 @@ Plug 'flazz/vim-colorschemes'
 Plug 'srcery-colors/srcery-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'itchyny/lightline.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
+Plug 'w0rp/ale'
+Plug 'https://tpope.io/vim/surround.git'
+
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+  Plug 'Shougo/deoplete.nvim'
+  Plug 'roxma/nvim-yarp'
+  Plug 'roxma/vim-hug-neovim-rpc'
+endif
 call plug#end()
+
+let g:deoplete#enable_at_startup = 1
 
 if $TERM == "xterm-256color"
   set t_Co=256
 endif
 
+inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
 set rtp+=/usr/local/opt/fzf
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'css': ['prettier'],
+\}
+let g:ale_fix_on_save = 1
+let g:ale_linters_explicit = 1
+
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ }
