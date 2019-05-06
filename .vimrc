@@ -15,7 +15,6 @@ colorscheme base16-flat
 
 set clipboard=unnamed
 
-nnoremap <F5> :CtrlP<space>.<CR>
 nnoremap <F6> <C-w>h
 nnoremap <F7> <C-w>j
 nnoremap <F8> <C-w>k
@@ -23,6 +22,7 @@ nnoremap <F9> <C-w>l
 nnoremap <F10> <C-w>q
 nnoremap <F11> :NERDTreeToggle<CR>
 nnoremap <C-r> py regression.py<CR>
+nnoremap <Space> @
 
 let NERDTreeMinimalUI = 1
 let NERDTreeDirArrows = 1
@@ -59,14 +59,11 @@ Plug 'https://github.com/mxw/vim-jsx.git'
 "html auto complete
 Plug 'https://github.com/mattn/emmet-vim.git'
 "colour schemes
-Plug 'flazz/vim-colorschemes'
-Plug 'srcery-colors/srcery-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'itchyny/lightline.vim'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'w0rp/ale'
-Plug 'https://tpope.io/vim/surround.git'
 
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -75,6 +72,11 @@ else
   Plug 'roxma/nvim-yarp'
   Plug 'roxma/vim-hug-neovim-rpc'
 endif
+
+Plug 'iamcco/mathjax-support-for-mkdp'
+Plug 'iamcco/markdown-preview.vim'
+Plug 'https://github.com/tpope/vim-markdown.git'
+Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
 call plug#end()
 
 let g:deoplete#enable_at_startup = 1
@@ -98,3 +100,30 @@ let g:ale_linters_explicit = 1
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ }
+
+function! MathAndLiquid()
+    "" Define certain regions
+    " Block math. Look for "$$[anything]$$"
+    syn region math start=/\$\$/ end=/\$\$/
+    " inline math. Look for "$[not $][anything]$"
+    syn match math_block '\$[^$].\{-}\$'
+
+    " Liquid single line. Look for "{%[anything]%}"
+    syn match liquid '{%.*%}'
+    " Liquid multiline. Look for "{%[anything]%}[anything]{%[anything]%}"
+    syn region highlight_block start='{% highlight .*%}' end='{%.*%}'
+    " Fenced code blocks, used in GitHub Flavored Markdown (GFM)
+    syn region highlight_block start='```' end='```'
+
+    "" Actually highlight those regions.
+    hi link math Statement
+    hi link liquid Statement
+    hi link highlight_block Function
+    hi link math_block Function
+endfunction
+
+" Call everytime we open a Markdown file
+autocmd BufRead,BufNewFile,BufEnter *.md,*.markdown call MathAndLiquid()
+autocmd Filetype tex setl updatetime=1
+let g:livepreview_previewer = 'open -a Preview'
+
