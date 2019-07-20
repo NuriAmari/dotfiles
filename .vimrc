@@ -2,34 +2,81 @@
 set tabstop=4
 " when indenting with '>', use 4 spaces width
 set shiftwidth=4
-" On pressing tab, insert 4 spaces
+" change to 2 for js
+autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+autocmd FileType scss setlocal shiftwidth=2 tabstop=2
+" replace tabs with spaces
 set expandtab
+" relative line numbers
 set relativenumber
+" line numbers
 set number
+" no linewrap
 set nowrap
-set background=light
+" always display the status bar
 set laststatus=2
+" syntax highlight
 syntax enable
+" autoindenting
+set autoindent
 set noshowmode
-colorscheme base16-flat 
+set mouse=a
+" highlight search terms
+set hlsearch
+" show results as you type
+set incsearch
+
+" persistent undo
+set undofile
+set undodir=~/.vim/undo//
+
+if exists('*mkdir')
+  for s:dir in [ '/.vim/backup', '/.vim/swp', '/.vim/undo', '/.vim/tags', '/.vim/viminfo' ]
+    if !isdirectory($HOME.s:dir)
+      call mkdir($HOME.s:dir, 'p')
+    endif
+  endfor
+endif
+
+autocmd BufNewFile,BufRead * setlocal formatoptions-=r
 
 set clipboard=unnamed
 
-nnoremap <F6> <C-w>h
-nnoremap <F7> <C-w>j
-nnoremap <F8> <C-w>k
-nnoremap <F9> <C-w>l
-nnoremap <F10> <C-w>q
+" set leader to space
+map <Space> <Nop>
+let g:mapleader="\<Space>"
+let g:maplocalleader="\<Space>"
+
+" non recursive normal mode mappings
+" navigating between splits
+noremap <F6> <C-w>h
+noremap <F7> <C-w>j
+noremap <F8> <C-w>k
+noremap <F9> <C-w>l
+noremap <F10> <C-w>q
+
+" for when not using iterm, probably gonna move towards
+noremap <C-h> <C-w>h
+noremap <C-j> <C-w>j
+noremap <C-k> <C-w>k
+noremap <C-l> <C-w>l
+noremap <C-w> <C-w>q
+
+" toggel file tree
 nnoremap <F11> :NERDTreeToggle<CR>
-nnoremap <C-r> py regression.py<CR>
-nnoremap <Space> @
+" Fzf keybindings
+nnoremap <leader>b :Buffers<CR>
+nnoremap <leader>f :FZF<CR>
+nnoremap <leader>m :FZFMru<CR>
+nnoremap <leader>t :Tags<CR>
 
-let NERDTreeMinimalUI = 1
-let NERDTreeDirArrows = 1
-let NERDTreeAutoDeleteBuffer = 1
+" use to quick refresh vim
+noremap <leader>rr :source ~/.vimrc<CR>
 
-set encoding=UTF-8
-set guifont=Fura\ Mono\ Nerd\ Font\ Mono:h14
+
+" close vim if only nerdtree is open
+autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
+
 
 execute pathogen#infect()
 
@@ -52,78 +99,97 @@ hi statusline guibg=green
 
 call plug#begin('~/.vim/plugged')
 
-"javascript syntax highlighting
-Plug 'https://github.com/pangloss/vim-javascript.git'
-"react syntax highlighting
-Plug 'https://github.com/mxw/vim-jsx.git'
-"html auto complete
-Plug 'https://github.com/mattn/emmet-vim.git'
+" fuzzy file finder
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'pbogut/fzf-mru.vim'
+
+" color scheme
+Plug 'chriskempson/base16-vim', {'do': 'git checkout dict_fix'}
+
 "colour schemes
-Plug 'ryanoasis/vim-devicons'
 Plug 'itchyny/lightline.vim'
-Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
 Plug 'w0rp/ale'
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+" autocompletion
+Plug 'Shougo/deoplete.nvim'
+Plug 'roxma/nvim-yarp'
+Plug 'roxma/vim-hug-neovim-rpc'
 
-Plug 'iamcco/mathjax-support-for-mkdp'
-Plug 'iamcco/markdown-preview.vim'
-Plug 'https://github.com/tpope/vim-markdown.git'
-Plug 'xuhdev/vim-latex-live-preview', { 'for': 'tex' }
+"jsx synatax highlight
+Plug 'mgechev/vim-jsx'
+
+"js sytax highlighting
+Plug 'https://github.com/pangloss/vim-javascript'
+
+" quickly comment / uncomment blocks
+Plug 'tpope/vim-commentary'
+
+" better grep
+Plug 'mileszs/ack.vim'
+" theme
+Plug 'rakr/vim-one'
+
+"tag generation
+Plug 'ludovicchabant/vim-gutentags'
+
+Plug 'tpope/vim-surround'
+
 call plug#end()
 
 let g:deoplete#enable_at_startup = 1
 
-if $TERM == "xterm-256color"
-  set t_Co=256
-endif
-
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-set rtp+=/usr/local/opt/fzf
-set runtimepath^=~/.vim/bundle/ctrlp.vim
-
 let g:ale_fixers = {
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \   'javascript': ['prettier'],
-\   'css': ['prettier'],
 \}
 let g:ale_fix_on_save = 1
-let g:ale_linters_explicit = 1
+"let g:ale_linters_explicit = 1
 
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ }
 
-function! MathAndLiquid()
-    "" Define certain regions
-    " Block math. Look for "$$[anything]$$"
-    syn region math start=/\$\$/ end=/\$\$/
-    " inline math. Look for "$[not $][anything]$"
-    syn match math_block '\$[^$].\{-}\$'
+command! Tags call fzf#run(fzf#wrap({
+      \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
+      \            '| grep --invert-match --text ^!',
+      \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index --expect=ctrl-x,ctrl-v',
+      \ 'down': '40%',
+      \ 'sink*':    function('s:tags_sink'),
+      \ }))
+command! Buffers call fzf#run(fzf#wrap({
+      \ 'source': filter(map(range(1, bufnr('$')), 'bufname(v:val)'), 'len(v:val)'),
+      \ }))
+command! MRU call fzf#run(fzf#wrap({
+      \ 'source': v:oldfiles,
+      \ }))
 
-    " Liquid single line. Look for "{%[anything]%}"
-    syn match liquid '{%.*%}'
-    " Liquid multiline. Look for "{%[anything]%}[anything]{%[anything]%}"
-    syn region highlight_block start='{% highlight .*%}' end='{%.*%}'
-    " Fenced code blocks, used in GitHub Flavored Markdown (GFM)
-    syn region highlight_block start='```' end='```'
+" FZF
+let g:fzf_action = {
+    \ 'ctrl-t': 'tabedit',
+    \ 'ctrl-x': 'split',
+    \ 'ctrl-v': 'vsplit',
+    \ }
 
-    "" Actually highlight those regions.
-    hi link math Statement
-    hi link liquid Statement
-    hi link highlight_block Function
-    hi link math_block Function
-endfunction
 
-" Call everytime we open a Markdown file
-autocmd BufRead,BufNewFile,BufEnter *.md,*.markdown call MathAndLiquid()
-autocmd Filetype tex setl updatetime=1
-let g:livepreview_previewer = 'open -a Preview'
+if (empty($TMUX))
+  if (has("nvim"))
+    "For Neovim 0.1.3 and 0.1.4 < https://github.com/neovim/neovim/pull/2198 >
+    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+  endif
+  "For Neovim > 0.1.5 and Vim > patch 7.4.1799 < https://github.com/vim/vim/commit/61be73bb0f965a895bfb064ea3e55476ac175162 >
+  "Based on Vim patch 7.4.1770 (`guicolors` option) < https://github.com/vim/vim/commit/8a633e3427b47286869aa4b96f2bfc1fe65b25cd >
+  " < https://github.com/neovim/neovim/wiki/Following-HEAD#20160511 >
+  if (has("termguicolors"))
+    set termguicolors
+  endif
+endif
 
+" set colorscheme
+syntax on
+colorscheme one
+set background=dark
+
+call one#highlight('jsObjectKey', 'e06c75', '', '')
+call one#highlight('javaScriptIdentifier', 'e06c75', '', '')
