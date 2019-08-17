@@ -1,3 +1,4 @@
+set shell=/bin/bash
 " show existing tab with 4 spaces width
 set tabstop=4
 " when indenting with '>', use 4 spaces width
@@ -77,6 +78,22 @@ noremap <leader>rr :source ~/.vimrc<CR>
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
+let g:ale_linters = {
+\   'javascript': ['prettier'],
+\   'python': ['flake8'],
+\}
+
+let g:ale_fixers = {
+\   'javascript': ['prettier'],
+\   'python': ['yapf'],
+\   '*': ['remove_trailing_lines', 'trim_whitespace'],
+\}
+
+let g:ale_linters_explicit = 1
+let g:ale_fix_on_save = 1
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
 
 execute pathogen#infect()
 
@@ -108,6 +125,8 @@ Plug 'chriskempson/base16-vim', {'do': 'git checkout dict_fix'}
 
 "colour schemes
 Plug 'itchyny/lightline.vim'
+
+" async fixing and linting
 Plug 'w0rp/ale'
 
 " autocompletion
@@ -129,10 +148,12 @@ Plug 'mileszs/ack.vim'
 " theme
 Plug 'rakr/vim-one'
 
-"tag generation
-Plug 'ludovicchabant/vim-gutentags'
-
 Plug 'tpope/vim-surround'
+
+Plug 'rust-lang/rust.vim'
+
+" git integration
+Plug 'tpope/vim-fugitive'
 
 call plug#end()
 
@@ -140,16 +161,6 @@ let g:deoplete#enable_at_startup = 1
 
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
-let g:ale_fixers = {
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\   'javascript': ['prettier'],
-\}
-let g:ale_fix_on_save = 1
-"let g:ale_linters_explicit = 1
-
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ }
 
 command! Tags call fzf#run(fzf#wrap({
       \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
@@ -185,6 +196,11 @@ if (empty($TMUX))
     set termguicolors
   endif
 endif
+
+
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ }
 
 " set colorscheme
 syntax on
