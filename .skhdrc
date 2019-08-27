@@ -1,5 +1,5 @@
 # open terminal
-cmd - return : osascript ./open_iterm.scpt
+cmd - return : bash /usr/local/bin/open_iterm.sh
 
 # focus window
 cmd - h : yabai -m window --focus west

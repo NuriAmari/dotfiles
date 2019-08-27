@@ -7,6 +7,7 @@ ln -s -f $DOTFILES_DIR/.bashrc ~/.bashrc
 ln -s -f $DOTFILES_DIR/.yabairc ~/.yabairc
 ln -s -f $DOTFILES_DIR/.skhdrc ~/.skhdrc
 ln -s -f $DOTFILES_DIR/.bash_profile ~/.bash_profile
+ln -s -f $DOTFILES_DIR/open_iterm.sh /usr/local/bin/open_iterm.sh
 
 echo "dot file linking complete"
 

@@ -4,7 +4,7 @@ set -e
 
 osascript - <<EOF
 tell application "iTerm2"
-    active
+    activate
     create window with default profile
 end tell
 EOF
