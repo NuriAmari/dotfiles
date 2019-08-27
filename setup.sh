@@ -7,3 +7,8 @@ ln -s -f $DOTFILES_DIR/.bashrc ~/.bashrc
 ln -s -f $DOTFILES_DIR/.yabairc ~/.yabairc
 ln -s -f $DOTFILES_DIR/.skhdrc ~/.skhdrc
 ln -s -f $DOTFILES_DIR/.bash_profile ~/.bash_profile
+
+# install homebrew if you don't already have it
+if [ ! $(command -v brew) ]; then
+    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+fi
