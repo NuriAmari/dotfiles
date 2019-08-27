@@ -18,6 +18,13 @@ else
     echo "homebrew already installed"
 fi
 
+# install latest version of vim
+if [ ! $(ls /usr/local/bin/vim) ]; then
+    brew install vim
+fi
+# symlink vim to replace old vim
+ln -s -f /usr/local/bin/vim /usr/bin/vim
+
 # install python3 if not already installed
 if [ ! $(command -v python3) ]; then
     brew install python
@@ -26,7 +33,7 @@ else
     echo "python3 already installed"
 fi
 
-# install python3 if not already installed
+# install node and nvm
 if [ ! $(command -v nvm) ]; then
     if [ ! -d "/Users/$USER/.nvm" ]; then
         mkdir /Users/$USER/.nvm
@@ -35,7 +42,7 @@ if [ ! $(command -v nvm) ]; then
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     nvm install node
-    echo "node version manager installed"
+    echo "node version manager installed, please restart terminal"
 else
     echo "node version manager already installed"
 fi
