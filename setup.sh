@@ -15,23 +15,17 @@ echo "dot file linking complete"
 if [ ! $(command -v brew) ]; then
     /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
     echo "homebrew installed"
-else
-    echo "homebrew already installed"
 fi
 
 # install latest version of vim
 if [ ! $(ls /usr/local/bin/vim) ]; then
     brew install vim
 fi
-# symlink vim to replace old vim
-ln -s -f /usr/local/bin/vim /usr/bin/vim
 
 # install python3 if not already installed
 if [ ! $(command -v python3) ]; then
     brew install python
     echo "python3 installed"
-else
-    echo "python3 already installed"
 fi
 
 # install node and nvm
@@ -44,6 +38,7 @@ if [ ! $(command -v node) ]; then
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     nvm install node
     echo "node installed, please restart terminal"
-else
-    echo "node already installed"
 fi
+
+npm install -g tldr
+npm install -g prettier
