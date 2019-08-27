@@ -35,7 +35,7 @@ else
 fi
 
 # install node and nvm
-if [ ! $(command -v nvm) ]; then
+if [ ! $(command -v node) ]; then
     if [ ! -d "/Users/$USER/.nvm" ]; then
         mkdir /Users/$USER/.nvm
     fi
@@ -43,7 +43,7 @@ if [ ! $(command -v nvm) ]; then
     export NVM_DIR="$HOME/.nvm"
     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
     nvm install node
-    echo "node version manager installed, please restart terminal"
+    echo "node installed, please restart terminal"
 else
-    echo "node version manager already installed"
+    echo "node already installed"
 fi
