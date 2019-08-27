@@ -145,12 +145,17 @@ Plug 'mileszs/ack.vim'
 " theme
 Plug 'rakr/vim-one'
 
+" change double quotes to single quotes fast
 Plug 'tpope/vim-surround'
 
+" rust syntax highlighting
 Plug 'rust-lang/rust.vim'
 
 " git integration
 Plug 'tpope/vim-fugitive'
+
+" file tree viewer
+Plug 'scrooloose/nerdtree'
 
 call plug#end()
 
