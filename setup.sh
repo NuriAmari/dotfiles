@@ -42,3 +42,4 @@ fi
 
 npm install -g tldr
 npm install -g prettier
+npm install -g leetcode-cli
