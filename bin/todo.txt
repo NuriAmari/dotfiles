@@ -1,0 +1,4 @@
+- Fix deoplete
+- Add npm global intalls to setup.sh
+- Add skbh and yabai installs to setup.sh as much as possible
+- Add key repeat settings to setup.sh
