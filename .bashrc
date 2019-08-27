@@ -122,11 +122,6 @@ export NVM_DIR="$HOME/.nvm"
 
 export SHELL=/usr/bin/bash
 
-# if there exists a ~/bin directory prepend it to my path
-if [ -d "$HOME/bin" ] ; then
-    export PATH="$HOME/bin:$PATH"
-fi
-
 # point to homebrew installed vim
 alias vim=/usr/local/bin/vim
 alias vi=/usr/local/bin/vim
