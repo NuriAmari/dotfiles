@@ -28,6 +28,8 @@ if [ ! $(command -v python3) ]; then
     echo "python3 installed"
 fi
 
+pip3 install pynvim
+
 # install node and nvm
 if [ ! $(command -v node) ]; then
     if [ ! -d "/Users/$USER/.nvm" ]; then
