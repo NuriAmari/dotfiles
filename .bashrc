@@ -126,3 +126,7 @@ export SHELL=/usr/bin/bash
 if [ -d "$HOME/bin" ] ; then
     export PATH="$HOME/bin:$PATH"
 fi
+
+# point to homebrew installed vim
+alias vim=/usr/local/bin/vim
+alias vi=/usr/local/bin/vim
