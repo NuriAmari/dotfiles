@@ -29,6 +29,8 @@ if [ ! $(command -v python3) ]; then
 fi
 
 pip3 install pynvim
+pip3 install flake8
+pip3 install yapf
 
 # install node and nvm
 if [ ! $(command -v node) ]; then
@@ -42,6 +44,7 @@ if [ ! $(command -v node) ]; then
     echo "node installed, please restart terminal"
 fi
 
-npm install -g tldr
-npm install -g prettier
-npm install -g leetcode-cli
+# install global npm packages
+npm list -g | grep tldr || npm install -g tldr
+npm list -g | grep prettier || npm install -g prettier
+npm list -g | grep leetcode || npm install -g leetcode-cli
