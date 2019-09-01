@@ -31,6 +31,7 @@ fi
 pip3 install pynvim
 pip3 install flake8
 pip3 install yapf
+pip3 install ranger-fm
 
 # install node and nvm
 if [ ! $(command -v node) ]; then
