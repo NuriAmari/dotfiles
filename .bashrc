@@ -122,7 +122,9 @@ export NVM_DIR="$HOME/.nvm"
 
 export SHELL=/usr/bin/bash
 
-# point to homebrew installed vim
-alias vim=/usr/local/bin/vim
-alias vi=/usr/local/bin/vim
-alias python=$(which python3)
+# point to homebrew installed vim, if not on student env
+if [ $USER != "nfamari" ]; then
+    alias vim=/usr/local/bin/vim
+    alias vi=/usr/local/bin/vim
+    alias python=$(which python3)
+fi
