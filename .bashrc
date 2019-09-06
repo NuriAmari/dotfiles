@@ -126,3 +126,4 @@ export SHELL=/usr/bin/bash
 alias vim=/usr/local/bin/vim
 alias vi=/usr/local/bin/vim
 alias python=$(which python3)
+alias login='ssh nfamari@linux.student.cs.uwaterloo.ca'

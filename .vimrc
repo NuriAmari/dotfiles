@@ -73,7 +73,7 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 let g:ale_linters = {
 \   'javascript': ['prettier'],
-\   'python': ['flake8'],
+\   'python': ['flake8', 'pyls'],
 \}
 
 let g:ale_fixers = {
