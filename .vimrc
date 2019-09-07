@@ -73,12 +73,16 @@ autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isT
 
 let g:ale_linters = {
 \   'javascript': ['prettier'],
-\   'python': ['flake8'],
+\   'python': ['flake8', 'pyls'],
+\   'c': ['gcc'],
+\   'cpp': ['gcc'],
 \}
 
 let g:ale_fixers = {
 \   'javascript': ['prettier'],
 \   'python': ['yapf'],
+\   'c': ['clang-format'],
+\   'cpp': ['clang-format'],
 \   '*': ['remove_trailing_lines', 'trim_whitespace'],
 \}
 

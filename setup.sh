@@ -8,6 +8,7 @@ ln -s -f $DOTFILES_DIR/.yabairc ~/.yabairc
 ln -s -f $DOTFILES_DIR/.skhdrc ~/.skhdrc
 ln -s -f $DOTFILES_DIR/.bash_profile ~/.bash_profile
 ln -s -f $DOTFILES_DIR/open_iterm.sh /usr/local/bin/open_iterm.sh
+ln -s -f $DOTFILES_DIR/.clang-format ~/.clang-format
 
 echo "dot file linking complete"
 
@@ -28,10 +29,16 @@ if [ ! $(command -v python3) ]; then
     echo "python3 installed"
 fi
 
+if [ ! $(command -v clang-format) ]; then
+    brew install clang-format
+    echo "clang-format installed"
+fi
+
 pip3 install pynvim
 pip3 install flake8
 pip3 install yapf
 pip3 install ranger-fm
+pip3 install python-language-server
 
 # install node and nvm
 if [ ! $(command -v node) ]; then

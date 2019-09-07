@@ -128,3 +128,4 @@ if [ $USER != "nfamari" ]; then
     alias vi=/usr/local/bin/vim
     alias python=$(which python3)
 fi
+alias login='ssh nfamari@linux.student.cs.uwaterloo.ca'
