@@ -134,4 +134,4 @@ else
     export CURR_ASSIGNMENT=0
     alias cd_run="cd $HOME/cs350-os161/root"
 fi
-alias login='ssh nfamari@linux.student.cs.uwaterloo.ca'
+# alias login='ssh nfamari@linux.student.cs.uwaterloo.ca'

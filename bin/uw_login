@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+    ssh nfamari@linux.student.cs.uwaterloo.ca
+elif [ $# -eq 1 ]; then
+    ssh nfamari@ubuntu1804-00${1}.student.cs.uwaterloo.ca
+else
+    echo "Too many args, only accepts machine number"
+fi
