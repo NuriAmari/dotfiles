@@ -11,3 +11,4 @@ ln -s -f $DOTFILES_DIR/open_iterm.sh /usr/local/bin/open_iterm.sh
 ln -s -f $DOTFILES_DIR/.clang-format ~/.clang-format
 ln -s -f $DOTFILES_DIR/bin/leet /usr/local/bin/leet
 ln -s -f $DOTFILES_DIR/bin/uw_login /usr/local/bin/uw_login
+ln -s -f $DOTFILES_DIR/coc-settings.json ~/.vim/coc-settings.json

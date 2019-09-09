@@ -67,6 +67,7 @@ nnoremap <leader>t :Tags<CR>
 " use to quick refresh vim
 noremap <leader>rr :source ~/.vimrc<CR>
 
+nmap <silent> gd <Plug>(coc-definition)
 
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
@@ -161,6 +162,9 @@ Plug 'tpope/vim-fugitive'
 " file tree viewer
 Plug 'scrooloose/nerdtree'
 
+" coc for lsp support
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+
 call plug#end()
 
 let g:deoplete#enable_at_startup = 1
@@ -180,6 +184,7 @@ command! Buffers call fzf#run(fzf#wrap({
 command! MRU call fzf#run(fzf#wrap({
       \ 'source': v:oldfiles,
       \ }))
+
 
 " FZF
 let g:fzf_action = {

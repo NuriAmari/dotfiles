@@ -27,6 +27,11 @@ if [ ! $(command -v clang-format) ]; then
     echo "clang-format installed"
 fi
 
+if [ ! $(command -v ccls) ]; then
+    brew install ccls
+    echo "ccls installed"
+fi
+
 pip3 install pynvim
 pip3 install flake8
 pip3 install yapf
