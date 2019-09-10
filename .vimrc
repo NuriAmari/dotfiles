@@ -165,6 +165,9 @@ Plug 'scrooloose/nerdtree'
 " coc for lsp support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
+" markdown syntax highlighting
+Plug 'vim-pandoc/vim-pandoc-syntax'
+
 call plug#end()
 
 let g:deoplete#enable_at_startup = 1
