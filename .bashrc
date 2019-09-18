@@ -126,7 +126,6 @@ export SHELL=/usr/bin/bash
 if [ $USER != "nfamari" ]; then
     alias vim=/usr/local/bin/vim
     alias vi=/usr/local/bin/vim
-    alias python=$(which python3)
 
 else
     # add ccls binary to our path
