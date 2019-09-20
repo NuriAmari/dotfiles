@@ -6,6 +6,7 @@ set shiftwidth=4
 " change to 2 for js
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType scss setlocal shiftwidth=2 tabstop=2
+autocmd FileType c setlocal shiftwidth=8 tabstop=8
 " replace tabs with spaces
 set expandtab
 " relative line numbers
