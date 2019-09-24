@@ -6,6 +6,8 @@ set shiftwidth=4
 " change to 2 for js
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType scss setlocal shiftwidth=2 tabstop=2
+" set wrap for markdown
+autocmd FileType md setlocal wrap
 " replace tabs with spaces
 set expandtab
 " relative line numbers
@@ -47,6 +49,10 @@ set clipboard=unnamed
 map <Space> <Nop>
 let g:mapleader="\<Space>"
 let g:maplocalleader="\<Space>"
+
+" better line navigation when linewrapping is one
+nnoremap j gj
+nnoremap k gk
 
 " for when not using iterm, probably gonna move towards
 noremap <C-h> <C-w>h
