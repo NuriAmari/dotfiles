@@ -130,7 +130,8 @@ if [ $USER != "nfamari" ]; then
 else
     # add ccls binary to our path
     export PATH=$PATH:"$HOME/git/ccls/Release"
-    export CURR_ASSIGNMENT=0
+    export PATH; PATH=`/bin/showpath /u/cs350/sys161/bin /u/cs350/bin standard`
+    export CURR_ASSIGNMENT=1
     alias cd_run="cd $HOME/cs350-os161/root"
 fi
 # alias login='ssh nfamari@linux.student.cs.uwaterloo.ca'

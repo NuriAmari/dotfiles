@@ -8,6 +8,8 @@ autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType scss setlocal shiftwidth=2 tabstop=2
 " set wrap for markdown
 autocmd FileType md setlocal wrap
+" set tabwidth for c
+autocmd FileType c setlocal shiftwidth=8 tabstop=8
 " replace tabs with spaces
 set expandtab
 " relative line numbers
