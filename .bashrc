@@ -126,6 +126,7 @@ export SHELL=/usr/bin/bash
 if [ $USER != "nfamari" ]; then
     alias vim=/usr/local/bin/vim
     alias vi=/usr/local/bin/vim
+    export PATH="/usr/local/bin/:$PATH"
 
 else
     # add ccls binary to our path
