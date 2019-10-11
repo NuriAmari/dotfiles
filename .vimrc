@@ -75,6 +75,8 @@ nnoremap <leader>t :Tags<CR>
 " use to quick refresh vim
 noremap <leader>rr :source ~/.vimrc<CR>
 
+nmap <silent> gd <Plug>(coc-definition)
+
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -98,6 +100,7 @@ let g:ale_fix_on_save = 1
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
+let g:ale_set_balloons = 0
 
 function! InsertStatuslineColor(mode)
   if a:mode == 'i'
@@ -167,6 +170,9 @@ Plug 'tpope/vim-fugitive'
 
 " file tree viewer
 Plug 'scrooloose/nerdtree'
+
+" coc for lsp support
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " markdown syntax highlighting
 Plug 'vim-pandoc/vim-pandoc-syntax'
