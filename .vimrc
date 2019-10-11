@@ -75,8 +75,6 @@ nnoremap <leader>t :Tags<CR>
 " use to quick refresh vim
 noremap <leader>rr :source ~/.vimrc<CR>
 
-nmap <silent> gd <Plug>(coc-definition)
-
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
@@ -170,11 +168,11 @@ Plug 'tpope/vim-fugitive'
 " file tree viewer
 Plug 'scrooloose/nerdtree'
 
-" coc for lsp support
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
 " markdown syntax highlighting
 Plug 'vim-pandoc/vim-pandoc-syntax'
+
+" ai autocompletion
+Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
 
 call plug#end()
 

@@ -135,4 +135,6 @@ else
     export CURR_ASSIGNMENT=1
     alias cd_run="cd $HOME/cs350-os161/root"
 fi
-# alias login='ssh nfamari@linux.student.cs.uwaterloo.ca'
+
+# use vi style editing with bash
+set -o vi
