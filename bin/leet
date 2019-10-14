@@ -1,2 +1,3 @@
-#!/bin/bash
-leetcode show -x -l python3 -g ${1}
+#
+/bin/bash
+leetcode show -l cpp -g ${1}
