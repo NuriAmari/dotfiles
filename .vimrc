@@ -5,6 +5,7 @@ set tabstop=4
 set shiftwidth=4
 " change to 2 for js
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
+autocmd FileType typescript.tsx setlocal shiftwidth=2 tabstop=2
 autocmd FileType scss setlocal shiftwidth=2 tabstop=2
 " set wrap for markdown
 autocmd FileType md setlocal wrap
@@ -56,16 +57,23 @@ let g:maplocalleader="\<Space>"
 nnoremap j gj
 nnoremap k gk
 
-" for when not using iterm, probably gonna move towards
+" split navigation
 noremap <C-h> <C-w>h
 noremap <C-j> <C-w>j
 noremap <C-k> <C-w>k
 noremap <C-l> <C-w>l
 noremap <C-w> <C-w>q
-noremap <C-n> :NERDTreeToggle<CR>
 
-" toggel file tree
-nnoremap <F11> :NERDTreeToggle<CR>
+" nerd tree commands
+noremap <C-n> :NERDTreeToggle<CR>
+noremap <C-f> :NERDTreeFind<CR>
+
+" tab keybindings
+nnoremap tn :tabnew<CR>
+nnoremap tj :tabp<CR>
+nnoremap tk :tabn<CR>
+nnoremap tw :tabclose<CR>
+
 " Fzf keybindings
 nnoremap <leader>b :Buffers<CR>
 nnoremap <leader>f :FZF<CR>
@@ -75,33 +83,25 @@ nnoremap <leader>t :Tags<CR>
 " use to quick refresh vim
 noremap <leader>rr :source ~/.vimrc<CR>
 
-nmap <silent> gd <Plug>(coc-definition)
+" coc configuration
+
+" tab and shift tab to iterate suggestions, enter to confirm
+inoremap <expr> <Tab> pumvisible() ? "\<C-n>" : "\<Tab>"
+inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<Tab>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+nmap <silent> <leader>gd <Plug>(coc-definition)
+nmap <silent> <leader>gr <Plug>(coc-references)
+nmap <silent> <leader>rn <Plug>(coc-rename)
+vmap <silent> <leader>f <Plug>(coc-format-selected)
+nmap <silent> <leader>a <Plug>(coc-codeaction)
+
+command! -nargs=0 Format :call CocAction('format')
 
 " close vim if only nerdtree is open
 autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTree") && b:NERDTree.isTabTree()) | q | endif
 
-let g:ale_linters = {
-\   'javascript': ['prettier'],
-\   'python': ['flake8', 'pyls'],
-\   'c': ['gcc'],
-\   'cpp': ['gcc'],
-\}
-
-let g:ale_fixers = {
-\   'javascript': ['prettier'],
-\   'python': ['yapf'],
-\   'c': ['clang-format'],
-\   'cpp': ['clang-format'],
-\   '*': ['remove_trailing_lines', 'trim_whitespace'],
-\}
-
-let g:ale_linters_explicit = 1
-let g:ale_fix_on_save = 1
-let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 'never'
-let g:ale_lint_on_insert_leave = 0
-let g:ale_set_balloons = 0
-
+" light line configuration
 function! InsertStatuslineColor(mode)
   if a:mode == 'i'
     hi statusline guibg=magenta
@@ -131,33 +131,21 @@ call plug#begin('~/.vim/plugged')
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'pbogut/fzf-mru.vim'
 
-" color scheme
-Plug 'chriskempson/base16-vim', {'do': 'git checkout dict_fix'}
-
 "colour schemes
 Plug 'itchyny/lightline.vim'
-
-" async fixing and linting
-Plug 'w0rp/ale'
-
-" autocompletion
-Plug 'Shougo/deoplete.nvim'
-Plug 'roxma/nvim-yarp'
-Plug 'roxma/vim-hug-neovim-rpc'
 
 "jsx synatax highlight
 Plug 'mgechev/vim-jsx'
 
+"typescript syntax
+Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
+
 "js sytax highlighting
-Plug 'https://github.com/pangloss/vim-javascript'
+Plug 'pangloss/vim-javascript'
 
 " quickly comment / uncomment blocks
 Plug 'tpope/vim-commentary'
-
-" better grep
-Plug 'mileszs/ack.vim'
-" theme
-Plug 'rakr/vim-one'
 
 " change double quotes to single quotes fast
 Plug 'tpope/vim-surround'
@@ -174,17 +162,10 @@ Plug 'scrooloose/nerdtree'
 " coc for lsp support
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" markdown syntax highlighting
-Plug 'vim-pandoc/vim-pandoc-syntax'
-
-" ai autocompletion
-Plug 'tbodt/deoplete-tabnine', { 'do': './install.sh' }
+" one dark theme
+Plug 'rakr/vim-one'
 
 call plug#end()
-
-let g:deoplete#enable_at_startup = 1
-
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 
 command! Tags call fzf#run(fzf#wrap({
       \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
@@ -208,24 +189,16 @@ let g:fzf_action = {
     \ 'ctrl-v': 'vsplit',
     \ }
 
-if (empty($TMUX))
-  if (has("nvim"))
-    let $NVIM_TUI_ENABLE_TRUE_COLOR=1
-  endif
-  if (has("termguicolors"))
-    set termguicolors
-  endif
-endif
-
-
 let g:lightline = {
       \ 'colorscheme': 'wombat',
       \ }
 
+set termguicolors
+
 " set colorscheme
-syntax on
-colorscheme one
 set background=dark
+set t_Co=256
+colorscheme one
 
 call one#highlight('jsObjectKey', 'e06c75', '', '')
 call one#highlight('javaScriptIdentifier', 'e06c75', '', '')
