@@ -21,7 +21,12 @@ eval "$(pyenv init -)"
 
 alias cd_docker_env="cd /var/ata/cache/docker_dev_env/master"
 alias cd_work="cd /Users/nuri/ata_desktop/squid/cache"
-export PATH=$PATH:~/ata_desktop/arc/arcanist/bin
+alias cd_npm="cd /var/squid/sites/panel/squid"
+export PATH=$PATH:~/ata_desktop/arc/arcanist/bin:/var/ata/tools
 source ~/ata_desktop/arc/arcanist/resources/shell/bash-completion
 alias vim=$(which nvim)
 alias vi=$(which nvim)
+alias generate_tags="ctags -R --exclude=*/node_modules/* --exclude=*/build/* --exclude=*/*.min.js --exclude=*.sql --links=no ."
+
+# tab completion apparently
+[[ -r "/usr/local/etc/profile.d/bash_completion.sh" ]] && . "/usr/local/etc/profile.d/bash_completion.sh"

@@ -1,4 +1,5 @@
 {
     "tslint.configFile": "/Users/nuri/ata_desktop/squid/cache/panel/master/squid/panel/static/src/tslint.json",
-    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true
+    "typescript.format.insertSpaceAfterOpeningAndBeforeClosingNonemptyBraces": true,
+    "python.linting.enabled": false
 }

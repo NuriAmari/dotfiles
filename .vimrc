@@ -6,6 +6,7 @@ set shiftwidth=4
 " change to 2 for js
 autocmd FileType javascript setlocal shiftwidth=2 tabstop=2
 autocmd FileType typescript.tsx setlocal shiftwidth=2 tabstop=2
+autocmd FileType typescript setlocal shiftwidth=2 tabstop=2
 autocmd FileType scss setlocal shiftwidth=2 tabstop=2
 " set wrap for markdown
 autocmd FileType md setlocal wrap
@@ -31,6 +32,8 @@ set mouse=a
 set hlsearch
 " show results as you type
 set incsearch
+
+set tags=tags;
 
 " persistent undo
 set undofile
@@ -67,6 +70,9 @@ noremap <C-w> <C-w>q
 " nerd tree commands
 noremap <C-n> :NERDTreeToggle<CR>
 noremap <C-f> :NERDTreeFind<CR>
+
+" tag bar command
+noremap <C-t> :TagbarToggle<CR>
 
 " tab keybindings
 nnoremap tn :tabnew<CR>
@@ -130,6 +136,7 @@ call plug#begin('~/.vim/plugged')
 " fuzzy file finder
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'pbogut/fzf-mru.vim'
+Plug 'junegunn/fzf.vim'
 
 "colour schemes
 Plug 'itchyny/lightline.vim'
@@ -165,32 +172,43 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 " one dark theme
 Plug 'rakr/vim-one'
 
+" shows context based on tags
+Plug 'majutsushi/tagbar'
+
+" gruvbox colorscheme
+Plug 'morhetz/gruvbox'
+
+" ale for whitespace removal and spell check
+Plug 'dense-analysis/ale'
+
 call plug#end()
 
-command! Tags call fzf#run(fzf#wrap({
-      \ 'source':  'cat '.join(map(tagfiles(), 'fnamemodify(v:val, ":S")')).
-      \            '| grep --invert-match --text ^!',
-      \ 'options': '+m -d "\t" --with-nth 1,4.. -n 1 --tiebreak=index --expect=ctrl-x,ctrl-v',
-      \ 'down': '40%',
-      \ 'sink*':    function('s:tags_sink'),
-      \ }))
-command! Buffers call fzf#run(fzf#wrap({
-      \ 'source': filter(map(range(1, bufnr('$')), 'bufname(v:val)'), 'len(v:val)'),
-      \ }))
-command! MRU call fzf#run(fzf#wrap({
-      \ 'source': v:oldfiles,
-      \ }))
-
-
-" FZF
-let g:fzf_action = {
-    \ 'ctrl-t': 'tabedit',
-    \ 'ctrl-x': 'split',
-    \ 'ctrl-v': 'vsplit',
-    \ }
+function! s:tags_sink(lines) abort
+  if empty(a:lines)
+    return
+  endif
+  let l:cmd = get({
+        \ 'ctrl-t': 'tabedit',
+        \ 'ctrl-x': 'split',
+        \ 'ctrl-v': 'vsplit',
+        \ }, remove(a:lines, 0), 'e')
+  let l:query = a:lines[0]
+  let l:parts = split(l:query, '\t\zs')
+  let l:excmd = matchstr(l:parts[2:], '^.*\ze;"\t')
+  execute 'silent ' l:cmd l:parts[1][:-2]
+  let [l:magic, &magic] = [&magic, 0]
+  execute l:excmd
+  let &magic = l:magic
+endfunction
 
 let g:lightline = {
       \ 'colorscheme': 'wombat',
+      \ 'component': {
+      \     'tagbar': '%{tagbar#currenttag("[%s]", "", "f")}',
+      \ },
+      \ 'active': {
+      \     'left': [ [ 'mode', 'paste' ], [ 'readonly', 'filename', 'modified', 'tagbar' ] ],
+      \ },
       \ }
 
 set termguicolors
@@ -198,7 +216,61 @@ set termguicolors
 " set colorscheme
 set background=dark
 set t_Co=256
-colorscheme one
+colorscheme gruvbox
+let g:gruvbox_contrast_dark = 'hard'
 
-call one#highlight('jsObjectKey', 'e06c75', '', '')
-call one#highlight('javaScriptIdentifier', 'e06c75', '', '')
+" colorscheme one
+
+" call one#highlight('jsObjectKey', 'e06c75', '', '')
+" call one#highlight('javaScriptIdentifier', 'e06c75', '', '')
+
+" Zoom / Restore window.
+function! s:ZoomToggle() abort
+    if exists('t:zoomed') && t:zoomed
+        execute t:zoom_winrestcmd
+        let t:zoomed = 0
+    else
+        let t:zoom_winrestcmd = winrestcmd()
+        resize
+        vertical resize
+        let t:zoomed = 1
+    endif
+endfunction
+command! ZoomToggle call s:ZoomToggle()
+nnoremap <silent> <leader>z :ZoomToggle<CR>
+
+" Bookmarks
+function Bookmark(bookmark_name)
+    let l:current_file = expand("%:p")
+    let l:current_line = line(".")
+    redir >> ~/.vim/Bookmarks
+    echo a:bookmark_name .. ": " .. l:current_file .. ":" .. l:current_line
+    redir END
+endfunction
+
+command! -nargs=1 Book call Bookmark(<f-args>)
+
+" Return to last position in files
+autocmd BufReadPost *
+     \ if line("'\"") > 0 && line("'\"") <= line("$") |
+     \   exe "normal! g`\"" |
+     \ endif
+
+" Ale configuration
+let g:ale_fixers = {
+\ '*': ['remove_trailing_lines', 'trim_whitespace'],
+\ 'cpp': ['clang-format'],
+\}
+
+let g:ale_linters = {
+\ 'python': ['pylint'],
+\ 'typescript': ['tslint'],
+\ 'typescript.jsx': ['tslint'],
+\ 'cpp': ['clang'],
+\}
+
+let g:ale_linters_explicit = 1
+
+let g:python_host_prog='/usr/bin/local/docker_python'
+
+set spell
