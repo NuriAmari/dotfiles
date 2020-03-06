@@ -260,6 +260,9 @@ autocmd BufReadPost *
 let g:ale_fixers = {
 \ '*': ['remove_trailing_lines', 'trim_whitespace'],
 \ 'cpp': ['clang-format'],
+\ 'typescript': ['prettier'],
+\ 'typescript.jsx': ['prettier'],
+\ 'js': ['prettier'],
 \}
 
 let g:ale_linters = {
